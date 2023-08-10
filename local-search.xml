@@ -4,7 +4,26 @@
   
   
   <entry>
-    <title>(一)初试nginx</title>
+    <title>Liunx备忘录</title>
+    <link href="/2023/08/07/liunx%E5%A4%87%E5%BF%98%E5%BD%95/"/>
+    <url>/2023/08/07/liunx%E5%A4%87%E5%BF%98%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><div class="note note-info">            <p>liunx命令长时间不写就会忘记，所以写篇博客记录一下！</p>          </div><h2 id="包管理器"><a href="#包管理器" class="headerlink" title="包管理器"></a>包管理器</h2><p>linux中的包管理器真的是非常的好用，仅需要几个字母便可以直接安装&#x2F;卸载&#x2F;更新软件</p><div class="note note-success">            <ul><li><p>安装<br>apt install xxx</p></li><li><p>重新安装<br>apt reinstall xxx</p></li><li><p>移除<br>apt remove xxx</p></li><li><p>包源更新<br>apt update</p></li><li><p>更新<br>apt upgrade</p></li></ul>          </div><p>由于国内特殊的网络原因，导致访问这些软件时下载更新很慢，鉴于此可以参考使用<a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/">清华大学镜像源</a>来解决此问题</p><p>使用vi编辑&#x2F;etc&#x2F;apt&#x2F;sources.list,修改如下</p><div class="note note-success">            <p># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释<br><strong>deb <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy main restricted universe multiverse</strong></p><p># deb-src <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy main restricted universe multiverse<br><strong>deb <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-updates main restricted universe multiverse</strong></p><p># deb-src <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-updates main restricted universe multiverse<br><strong>deb <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-backports main restricted universe multiverse</strong></p><p># deb-src <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-backports main restricted universe multiverse</p><p># deb <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-security main restricted universe multiverse<br># # deb-src <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-security main restricted universe multiverse</p><p><strong>deb <a href="http://security.ubuntu.com/ubuntu/">http://security.ubuntu.com/ubuntu/</a> jammy-security main restricted universe multiverse</strong><br># # deb-src <a href="http://security.ubuntu.com/ubuntu/">http://security.ubuntu.com/ubuntu/</a> jammy-security main restricted universe multiverse</p><p># 预发布软件源，不建议启用<br># deb <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-proposed main restricted universe multiverse<br># # deb-src <a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> jammy-proposed main restricted universe multiverse</p>          </div>]]></content>
+    
+    
+    <categories>
+      
+      <category>Liunx</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>初试nginx</title>
     <link href="/2023/04/24/%E5%88%9D%E8%AF%95nginx/"/>
     <url>/2023/04/24/%E5%88%9D%E8%AF%95nginx/</url>
     
@@ -13,16 +32,10 @@
     
     <categories>
       
-      <category>nginx</category>
+      <category>Nginx</category>
       
     </categories>
     
-    
-    <tags>
-      
-      <tag>linux+nginx 使用教程</tag>
-      
-    </tags>
     
   </entry>
   
