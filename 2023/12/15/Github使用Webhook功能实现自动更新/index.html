@@ -16,17 +16,19 @@
   <meta name="author" content="阿呆">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言             是否还在为每次打包代码后手动推送至服务器而烦恼现只需要在你的服务器轻轻的搭建一个接口，配合gihub的webhook，你的问题就迎刃而解每次编写完代码，只需要轻轻的点击一下git提交，你将会见证奇迹的发生话不多说让我们开始吧             配置GitHub 部署环境Linux首先需要一台Linux服务器，但这个写项目的都是人手一台，这里就不过多拓展了 Nod">
+    <meta name="description" content="前言             有一天我在敲代码，网站要改几个东西，我就写完打包然后上传服务器，然后我的后端大佬说你天天手动传不累吗，我给你搞一个自动推送，一开始我还没在意，觉得这个不适用不如自己上传方便，过了一会，大佬叫我试试，我就提了一个，网站页面就自动更新了，我才发现这东西是真香呀，后面和大佬探讨了一下，就是通过github的webhooks功能，每次推送代码github就会请求你的接口，然后">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Github使用Webhook功能实现自动更新">
 <meta property="og:url" content="https://blog.moxccc.com/2023/12/15/Github%E4%BD%BF%E7%94%A8Webhook%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0/index.html">
 <meta property="og:site_name" content="Mo博客">
-<meta property="og:description" content="前言             是否还在为每次打包代码后手动推送至服务器而烦恼现只需要在你的服务器轻轻的搭建一个接口，配合gihub的webhook，你的问题就迎刃而解每次编写完代码，只需要轻轻的点击一下git提交，你将会见证奇迹的发生话不多说让我们开始吧             配置GitHub 部署环境Linux首先需要一台Linux服务器，但这个写项目的都是人手一台，这里就不过多拓展了 Nod">
+<meta property="og:description" content="前言             有一天我在敲代码，网站要改几个东西，我就写完打包然后上传服务器，然后我的后端大佬说你天天手动传不累吗，我给你搞一个自动推送，一开始我还没在意，觉得这个不适用不如自己上传方便，过了一会，大佬叫我试试，我就提了一个，网站页面就自动更新了，我才发现这东西是真香呀，后面和大佬探讨了一下，就是通过github的webhooks功能，每次推送代码github就会请求你的接口，然后">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.moxccc.com/img/blogimg/23-12-15/01.png">
+<meta property="og:image" content="https://blog.moxccc.com/img/gif/01.gif">
+<meta property="og:image" content="https://blog.moxccc.com/img/gif/02.gif?40">
 <meta property="og:image" content="https://blog.moxccc.com/img/blogimg/23-12-15/02.png">
 <meta property="article:published_time" content="2023-12-15T04:58:05.000Z">
-<meta property="article:modified_time" content="2023-12-15T08:47:56.709Z">
+<meta property="article:modified_time" content="2023-12-18T00:40:35.615Z">
 <meta property="article:author" content="阿呆">
 <meta property="article:tag" content="前端">
 <meta property="article:tag" content="node">
@@ -237,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.9k 字
+          10k 字
         
       </span>
     
@@ -248,7 +250,7 @@
         
         
         
-          83 分钟
+          86 分钟
         
       </span>
     
@@ -292,7 +294,7 @@
               <div class="markdown-body">
                 
                 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><div class="note note-success">
-            <p>是否还在为每次打包代码后手动推送至服务器而烦恼<br>现只需要在你的服务器轻轻的搭建一个接口，配合gihub的webhook，你的问题就迎刃而解<br>每次编写完代码，只需要轻轻的点击一下git提交，你将会见证奇迹的发生<br>话不多说让我们开始吧</p>
+            <p>有一天我在敲代码，网站要改几个东西，我就写完打包然后上传服务器，然后我的后端大佬说你天天手动传不累吗，我给你搞一个自动推送，一开始我还没在意，觉得这个不适用不如自己上传方便，过了一会，大佬叫我试试，我就提了一个，网站页面就自动更新了，我才发现这东西是真香呀，后面和大佬探讨了一下，就是通过github的webhooks功能，每次推送代码github就会请求你的接口，然后你在接口里处理逻辑，安装依赖、打包再移动到网站目录下，就可以实现自动刷新。后面用的非常巴适，就想着用前端代码将其实现(后端大佬用的是C#),结果就有了这篇博客，废话不多说让我们开始吧</p>
           </div>
 
 <h2 id="配置GitHub"><a href="#配置GitHub" class="headerlink" title="配置GitHub"></a>配置GitHub</h2><p><img src="/../img/blogimg/23-12-15/01.png" srcset="/img/loading.gif" lazyload></p>
@@ -316,17 +318,17 @@
 </ol>
 <p>上面<code>@swagger</code> 是一个swagger接口文档注释，感兴趣的话可以看一下我的<a href="#%E9%A2%9D%E5%A4%96%E7%AF%87-Swagger">swagger教程</a></p>
 <div class="note note-info">
-            <p>至此，接口部署成功，现在当你往仓库里推项目的时候你的网页会自动更新,但是这个项目还有几个问题，</p><ul><li>项目接口返回慢，因为要全部完成才能返回状态码，基本上要3 ~ 4s</li><li>如果一个人重复推项目，当你第二次推项目的时候第一次还在打包或者一直重复推会导致项目崩溃，可能公司的项目也不会有人这样做，但是万一呢，你可以保证你自己，那其他人呢( 狗头保命 )</li></ul>
+            <p>到这里接口就部署成功，我觉得大功告成了,此时我的心情是这样的<img src="/../img/gif/01.gif" srcset="/img/loading.gif" lazyload><br>大佬问我做完没，我自信满满的说做完了，大佬说如果我给你发了多个请求你接口会怎么样，我当时想着都是我自己提交而且也就多发了几个请求嘛应该能扛得住，我就说没事，大佬叫我加个异步队列，我想着发就发嘛，总不能崩掉吧就没加，后来大佬测试了一下直接G了，然后就被喷了个体无完肤，现在我的心情是这样的<img src="/../img/gif/02.gif?40" srcset="/img/loading.gif" lazyload></p><p>一番交流下来也暴露我这项目的几个缺点</p><ul><li>项目接口返回慢，因为要全部完成才能返回状态码，基本上要3 ~ 4s</li><li>如果一个人重复提交会导致项目崩溃，可能公司的项目也不会有人这样做，但是万一呢，你可以保证你自己，那其他人呢( 狗头保命 )</li></ul>
           </div>
 
-<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><p>为了解决以上两个问题，思来想去还是觉得使用异步队列方便一点，考虑了kafka、rabbitmq和redis还是觉得用Redis，因为redis部署简单，且我们自用项目也没有太多需要处理的消息，下面给大家看一张大佬发我的这几个的对比图<br><img src="/../img/blogimg/23-12-15/02.png" srcset="/img/loading.gif" lazyload alt="大佬yyds"></p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><p>我大抵是想进步了，躺在床上横竖睡不着，坐起来静静地看着窗外，这悲伤没由得来，黯然的看着电脑上的项目，一个报错的是我的，另一个报错的也是我的。不行，怎么能被这个小东西难住了，然后就开始了我的虚心求教之路，为了解决以上两个问题，和大佬深入交流了一下，考虑了kafka、rabbitmq和redis大佬还是觉得用Redis好，因为redis部署简单，且自用项目也没有太多需要处理的消息，确定下来后就开始了我的优化之旅，下面给大家看一张大佬发我的这几个的对比图<br><img src="/../img/blogimg/23-12-15/02.png" srcset="/img/loading.gif" lazyload alt="大佬yyds"></p>
 <ol>
 <li><p>安装redis</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>linux 安装<br>apt install redis-server<br><span class="hljs-regexp">//</span>输入命令redis-cli ping 若提示PONG 则表示安装成功<br><br><span class="hljs-regexp">//</span>node 安装<br>npm install redis<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>使用redis</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//github.js</span><br><br><span class="hljs-comment">// redis 异步队列</span><br><span class="hljs-keyword">const</span> redis = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;redis&#x27;</span>);<br><span class="hljs-keyword">const</span> publisher = redis.<span class="hljs-title function_">createClient</span>(); <span class="hljs-comment">//发送者</span><br><span class="hljs-keyword">const</span> subscriber = redis.<span class="hljs-title function_">createClient</span>(); <span class="hljs-comment">//订阅者</span><br><br><span class="hljs-built_in">exports</span>.<span class="hljs-property">gitVueHook</span> = <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) &#123;<br><br>  &lt;!-- 其他代码 --&gt;<br>  <br>  <span class="hljs-comment">//在验证签名成功后给队列发送消息</span><br>  <span class="hljs-comment">// 获取提交人信息</span><br>  <span class="hljs-keyword">const</span> data = req.<span class="hljs-property">body</span>;<br>  <span class="hljs-comment">// 仓库名称</span><br>  <span class="hljs-keyword">const</span> depotName = data.<span class="hljs-property">repository</span>?.<span class="hljs-property">name</span>;<br>  <span class="hljs-comment">// 消息队列所需数据 </span><br>  <span class="hljs-keyword">const</span> taskData = &#123; depotName &#125;;<br><br>  <span class="hljs-comment">// 发布任务</span><br>  publisher.<span class="hljs-title function_">publish</span>(<span class="hljs-string">&#x27;githooks&#x27;</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(taskData), <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;发布消息时出错:&#x27;</span>, err);<br>      <span class="hljs-keyword">return</span> res.<span class="hljs-title function_">status</span>(<span class="hljs-number">500</span>).<span class="hljs-title function_">send</span>(&#123; <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;内部服务器错误&quot;</span> &#125;);<br>    &#125;<br>    res.<span class="hljs-title function_">status</span>(<span class="hljs-number">200</span>).<span class="hljs-title function_">json</span>(&#123; <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;ok&quot;</span> &#125;);<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">//订阅者</span><br>subscriber.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;message&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">channel, message</span>) =&gt;</span> &#123;<br>    <span class="hljs-title function_">deleteAndCloneRepository</span>()<br>  &#125;);<br>  <br>subscriber.<span class="hljs-title function_">subscribe</span>(<span class="hljs-string">&#x27;githooks&#x27;</span>);<br><br></code></pre></td></tr></table></figure></li>
-<li><p>优化，如果你的项目使用redis比较少可以将 订阅&#x2F;发布写在一起，如果使用redis的地方比较多的话，我建议是将订阅单独拎出来，防止代码复杂化，若单独写的话你的订阅事件里包含了一个<code>deleteAndCloneRepository</code>方法，所以首先要把这个<code>deleteAndCloneRepository</code>方法单独写成一个js文件，(如果闲麻烦也可以在gihook.js里将这个方法放出来)</p>
+<li><p>如果你的项目使用redis比较少可以将 订阅&#x2F;发布写在一起，如果使用redis的地方比较多的话，我建议是将订阅单独拎出来，防止代码复杂化，若单独写的话你的订阅事件里包含了一个<code>deleteAndCloneRepository</code>方法，所以首先要把这个<code>deleteAndCloneRepository</code>方法单独写成一个js文件，(如果嫌麻烦也可以在gihook.js里将这个方法放出来)</p>
 </li>
 </ol>
 <ul>
@@ -335,7 +337,7 @@
 <li><code>utils\redis\index.js</code>是一个单独的js文件 需要使用node index.js 命令启动，为了便捷，我们将它也设置为开机自启<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs abnf">cd  /etc/systemd/system/ <br>touch node-redis.service<br>vi node-redis.service<br><br>//node-redis.service内容如下：<br><br>[Unit]<br><span class="hljs-attribute">Description</span><span class="hljs-operator">=</span>node_redis<br><br>[Service]<br><span class="hljs-attribute">WorkingDirectory</span><span class="hljs-operator">=/</span>usr/web/utils/redis<br><span class="hljs-attribute">ExecStart</span><span class="hljs-operator">=</span>node index.js<br><span class="hljs-attribute">Restart</span><span class="hljs-operator">=</span>always<br><span class="hljs-attribute">RestartSec</span><span class="hljs-operator">=</span><span class="hljs-number">3</span> <br><span class="hljs-attribute">SyslogIdentifier</span><span class="hljs-operator">=</span>dotnet-example<br><span class="hljs-attribute">User</span><span class="hljs-operator">=</span>root<br><br>[Install]<br><span class="hljs-attribute">WantedBy</span><span class="hljs-operator">=</span>multi-user.target<br><br>//设置开启自启且立即启动<br>systemctl enable node-redis.service –now<br></code></pre></td></tr></table></figure></li>
 </ul>
 <div class="note note-info">
-            <p>设置redis后，上面的两个问题都被解决了，现在访问接口，耗时只有1.2s左右了，到这里项目就部署完毕，觉得对你有帮助的可以关注我，博客不定时更新，有问题可以在下方留言</p>
+            <p>设置redis后，上面的两个问题都被解决了，现在访问接口，耗时只有1.2s左右了，到这里项目就部署完毕，觉得对你有帮助的可以关注我，博客不定时更新，有问题可以在下方留言。对了，后端大佬的博客在我友链，感兴趣的可以关注一下</p>
           </div>
 
 
