@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://blog.moxccc.com/img/blogimg/9-15/05.png">
 <meta property="og:image" content="https://blog.moxccc.com/img/blogimg/9-15/06.png">
 <meta property="article:published_time" content="2023-09-15T05:38:28.000Z">
-<meta property="article:modified_time" content="2023-12-27T03:10:00.617Z">
+<meta property="article:modified_time" content="2024-01-16T01:42:32.760Z">
 <meta property="article:author" content="阿呆">
 <meta property="article:tag" content="ReactNative">
 <meta name="twitter:card" content="summary_large_image">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          3.4k 字
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          15 分钟
+          29 分钟
         
       </span>
     
@@ -329,6 +329,21 @@
 <div class="note note-warning">
             <p>若启动不成功可能是端口被占用，只需要修改端口号即可</p><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">npx react-native <span class="hljs-built_in">run</span>-android <span class="hljs-comment">--port=1234</span><br></code></pre></td></tr></table></figure><p>构建命令</p><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">npx react-<span class="hljs-keyword">native</span> bundle --platform android --dev <span class="hljs-keyword">false</span> --entry-<span class="hljs-keyword">file</span> index.js --bundle-output android<span class="hljs-regexp">/app/</span>src<span class="hljs-regexp">/main/</span>assets<span class="hljs-regexp">/index.android.bundle --assets-dest android/</span>app<span class="hljs-regexp">/src/m</span>ain/res<br></code></pre></td></tr></table></figure>
           </div>
+
+<h4 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h4><p><strong>1. 生成签名秘钥：</strong><br>你可以用keytool命令生成一个私有密钥。在Windows上keytool命令放在JDK的bin目录中（比如<code>..\jdkx.x.x_x\bin</code>），<br>进入你放<code>JDK</code>的目录，点文件地址栏输入<code>cmd</code> 接着输入以下命令 按提示操作即可</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">$ keytool -genkey -v -keystore <span class="hljs-keyword">my</span>-release-key.keystore -<span class="hljs-built_in">alias</span> <span class="hljs-keyword">my</span>-key-<span class="hljs-built_in">alias</span> -keyalg RSA -keysize <span class="hljs-number">2048</span> -validity <span class="hljs-number">10000</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>这条命令会要求你输入密钥库（keystore）和对应密钥的密码，然后设置一些发行相关的信息。最后它会生成一个叫做<code>my-release-key.keystore</code>的密钥库文件。</li>
+<li>在运行上面这条语句之后，密钥库里应该已经生成了一个单独的密钥，有效期为10000天。–alias参数后面的别名是你将来为应用签名时所需要用到的，所以记得记录这个别名。</li>
+</ul>
+<p><strong>2. 设置gradle变量：</strong><br>把<code>my-release-key.keystore</code>文件放到你工程中的<code>android/app</code>文件夹下。<br>编辑<code>android/gradle.properties</code>（没有这个文件你就创建一个），添加如下的代码（注意把其中的****替换为相应密码）</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">MYAPP_RELEASE_STORE_FILE</span>=my-release-key.keystore<br><span class="hljs-attr">MYAPP_RELEASE_KEY_ALIAS</span>=my-key-alias<br><span class="hljs-attr">MYAPP_RELEASE_STORE_PASSWORD</span>=*****<br><span class="hljs-attr">MYAPP_RELEASE_KEY_PASSWORD</span>=*****<br></code></pre></td></tr></table></figure>
+
+<p><strong>3. 添加签名到应用的gradle配置中：</strong><br>编辑你项目目录下的<code>android/app/build.gradle</code>，添加如下的签名配置：</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs fsharp"><span class="hljs-operator">...</span><br><span class="hljs-keyword">android</span> &#123;<br>    <span class="hljs-operator">...</span><br>    <span class="hljs-keyword">defaultConfig</span> &#123; <span class="hljs-operator">...</span> &#125;<br>    <span class="hljs-keyword">signingConfigs</span> &#123;<br>        <span class="hljs-keyword">release</span> &#123;<br>            storeFile file(<span class="hljs-string">&quot;my-release-key.keystore&quot;</span>)<br>            storePassword <span class="hljs-operator">******</span><br>            keyAlias <span class="hljs-string">&quot;my-key-alias&quot;</span><br>            keyPassword <span class="hljs-operator">******</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">buildTypes</span> &#123;<br>        <span class="hljs-keyword">release</span> &#123;<br>            <span class="hljs-operator">...</span><br>            signingConfig signingConfigs.release<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-operator">...</span><br></code></pre></td></tr></table></figure>
+<p><strong>4.打包：</strong><br>打包的话需要注意，在打包之前要先将<code>android\app\src\main\res</code>文件下所有<code>drawable-*</code>的文件全部删掉 否则会报错。<br>准备好之后，进入<code>android</code>文件夹，输入<code>cmd</code> 进入命令行，运行打包<code>gradlew assembleRelease</code> 即可。<br>为了加快效率 ，我这边是我们后端给我创建了一个bat的命令行进行的，只需要点击一下即可开始打包，如有需要自取，文件放置在<code>\android</code>目录下即可。</p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs wren"><span class="hljs-comment">//  *** 这里写的是你放置项目文件的绝对路径 从盘开始 例如C:\Program Files</span><br><br><span class="hljs-variable">rmdir</span> /<span class="hljs-variable">s</span> /<span class="hljs-variable">q</span> <span class="hljs-string">&quot;***<span class="hljs-char escape_">\a</span>ndroid<span class="hljs-char escape_">\a</span>pp\src\main<span class="hljs-char escape_">\r</span>es\drawable-hdpi&quot;</span><br><span class="hljs-variable">rmdir</span> /<span class="hljs-variable">s</span> /<span class="hljs-variable">q</span> <span class="hljs-string">&quot;***<span class="hljs-char escape_">\a</span>ndroid<span class="hljs-char escape_">\a</span>pp\src\main<span class="hljs-char escape_">\r</span>es\drawable-mdpi&quot;</span><br><span class="hljs-variable">rmdir</span> /<span class="hljs-variable">s</span> /<span class="hljs-variable">q</span> <span class="hljs-string">&quot;***<span class="hljs-char escape_">\a</span>ndroid<span class="hljs-char escape_">\a</span>pp\src\main<span class="hljs-char escape_">\r</span>es\drawable-xhdpi&quot;</span><br><span class="hljs-variable">rmdir</span> /<span class="hljs-variable">s</span> /<span class="hljs-variable">q</span> <span class="hljs-string">&quot;***<span class="hljs-char escape_">\a</span>ndroid<span class="hljs-char escape_">\a</span>pp\src\main<span class="hljs-char escape_">\r</span>es\drawable-xxhdpi&quot;</span><br><span class="hljs-variable">rmdir</span> /<span class="hljs-variable">s</span> /<span class="hljs-variable">q</span> <span class="hljs-string">&quot;***<span class="hljs-char escape_">\a</span>ndroid<span class="hljs-char escape_">\a</span>pp\src\main<span class="hljs-char escape_">\r</span>es\drawable-xxxhdpi&quot;</span><br><br><span class="hljs-variable">start</span> <span class="hljs-variable">gradlew</span>.<span class="hljs-property">bat</span> assembleRelease<br></code></pre></td></tr></table></figure>
+
 
 
 
